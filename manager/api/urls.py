@@ -18,7 +18,7 @@ Including another URLconf
 from django.conf.urls import include
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from api.views import ConfigFileViewSet, EmergencyContactViewSet
+from api.views import ConfigFileViewSet, ConfigScriptViewSet, EmergencyContactViewSet
 
 import api.views
 
@@ -54,5 +54,6 @@ urlpatterns = [
     path("efd/timeseries", api.views.query_efd, name="EFD-timeseries"),
 ]
 router.register("configfile", ConfigFileViewSet)
+router.register("configscript", ConfigScriptViewSet)
 router.register("emergencycontact", EmergencyContactViewSet)
 urlpatterns.append(path("", include(router.urls)))

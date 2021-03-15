@@ -17,10 +17,12 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from api.models import Token
-from api.serializers import TokenSerializer, ConfigSerializer
+from api.serializers import TokenSerializer, ConfigSerializer, ConfigScriptSerializer
 from api.serializers import (
     ConfigFileSerializer,
     ConfigFileContentSerializer,
+    ConfigScriptFileSerializer,
+    ConfigScriptFileContentSerializer,
     EmergencyContactSerializer,
 )
 from .schema_validator import DefaultingValidator
@@ -450,6 +452,29 @@ def get_config(request):
     serializer = ConfigFileContentSerializer(cf)
     return Response(serializer.data)
 
+@api_view(["GET"])
+@permission_classes((IsAuthenticated,))
+def get_config_script(request):
+    """Returns the config script
+
+    Params
+    ------
+    request: Request
+        The Request object
+
+    Returns
+    -------
+    Response
+        Containing the contents of the config script
+    """
+    try:
+        cf = ConfigScript.objects.first()
+    except ConfigScript.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ConfigScriptFileContentSerializer(cf)
+    return Response(serializer.data)
+
 
 class ConfigFileViewSet(viewsets.ModelViewSet):
     """GET, POST, PUT, PATCH or DELETE instances the ConfigFile model."""
@@ -482,6 +507,40 @@ class ConfigFileViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = ConfigFileContentSerializer(cf)
+        return Response(serializer.data)
+
+
+class ConfigScriptViewSet(viewsets.ModelViewSet):
+    """GET, POST, PUT, PATCH or DELETE instances the ConfigScript model."""
+
+    queryset = ConfigScript.objects.order_by("-update_timestamp").all()
+    """Set of objects to be accessed by queries to this viewsets endpoints"""
+
+    serializer_class = ConfigScriptFileSerializer
+    """Serializer used to serialize View objects"""
+
+    @action(detail=True)
+    def content(self, request, pk=None):
+        """Serialize a ConfigFile's content.
+
+        Params
+        ------
+        request: Request
+            The Requets object
+        pk: int
+            The corresponding ConfigFile pk
+
+        Returns
+        -------
+        Response
+            The response containing the serialized ConfigFile content
+        """
+        try:
+            cf = ConfigScript.objects.get(pk=pk)
+        except ConfigScript.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ConfigScriptFileContentSerializer(cf)
         return Response(serializer.data)
 
 

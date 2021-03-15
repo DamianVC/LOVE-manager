@@ -5,7 +5,7 @@ from drf_yasg.utils import swagger_serializer_method
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from manager import utils
-from api.models import ConfigFile, EmergencyContact
+from api.models import ConfigFile, ConfigScript, EmergencyContact
 from typing import Union
 
 
@@ -65,6 +65,12 @@ class ConfigSerializer(serializers.Serializer):
     config_file = serializers.JSONField()
 
 
+class ConfigScriptSerializer(serializers.Serializer):
+    """Custom Serializer to describe the confi script field for the Apidocs."""
+
+    config_script = serializers.JSONField()
+
+
 class TokenSerializer(serializers.Serializer):
     """Custom Serializer for responses to validate and get token requests."""
 
@@ -77,6 +83,8 @@ class TokenSerializer(serializers.Serializer):
     time_data = serializers.SerializerMethodField("get_time_data")
 
     config = serializers.SerializerMethodField("get_config")
+
+    config_script = serializers.SerializerMethodField("get_config_script")
 
     @swagger_serializer_method(serializer_or_field=UserPermissionsSerializer)
     def get_permissions(self, token):
@@ -160,6 +168,35 @@ class TokenSerializer(serializers.Serializer):
             serializer = ConfigFileContentSerializer(cf)
             return serializer.data
 
+    @swagger_serializer_method(serializer_or_field=serializers.JSONField())
+    def get_config_script(self, token) -> Union[dict, None]:
+        """Return the config script.
+        If the 'no_config_script' flag is present in the url of the original request, then the file is not read and the return value is None
+
+        Params
+        ------
+        token: Token
+            The Token object
+
+        Returns
+        -------
+        Dict
+            Dictionary containing the following keys:
+            - alarms_sounds: dictionary containing flags of sound ON/OF for each severity level. Eg:
+            alarms_sounds: {
+                critical: 1,
+                serious: 1,
+                warning: 0
+            }
+        """
+        no_config_script = self.context.get("no_config_script")
+        if no_config_script:
+            return None
+        else:
+            cf = ConfigScript.objects.first()
+            serializer = ConfigScriptContentSerializer(cf)
+            return serializer.data
+
 
 class ConfigFileSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
@@ -205,6 +242,56 @@ class ConfigFileContentSerializer(serializers.ModelSerializer):
         """Meta class to map serializer's fields with the model fields."""
 
         model = ConfigFile
+        """The model class to serialize"""
+
+        fields = ("id", "filename", "content", "update_timestamp")
+        """The fields of the model class to serialize"""
+
+
+class ConfigScriptFileSerializer(serializers.ModelSerializer):
+    """Serializer to map the Model instance into JSON format."""
+
+    filename = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, obj):
+        return str(obj.user)
+
+    def get_filename(self, obj):
+        return str(obj.file_name)
+
+    class Meta:
+        """Meta class to map serializer's scripts with the model fields."""
+
+        model = ConfigScript
+        """The model class to serialize"""
+
+        fields = (
+            "id",
+            "username",
+            "filename",
+            "creation_timestamp",
+            "update_timestamp",
+        )
+        """The fields of the model class to serialize"""
+
+
+class ConfigScriptFileContentSerializer(serializers.ModelSerializer):
+    """Serializer to map the Model instance into JSON format."""
+
+    content = serializers.SerializerMethodField()
+    filename = serializers.SerializerMethodField()
+
+    def get_content(self, obj):
+        return json.loads(obj.config_script.read().decode("ascii"))
+
+    def get_filename(self, obj):
+        return str(obj.file_name)
+
+    class Meta:
+        """Meta class to map serializer's fields with the model fields."""
+
+        model = ConfigScript
         """The model class to serialize"""
 
         fields = ("id", "filename", "content", "update_timestamp")

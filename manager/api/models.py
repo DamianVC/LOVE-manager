@@ -103,6 +103,32 @@ class ConfigFile(BaseModel):
     )
     """Reference to the config file"""
 
+class ConfigScript(BaseModel):
+    """ConfigScript Model, that includes actual configuration files."""
+
+    def validate_file_extension(value):
+        ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
+        valid_extensions = [".json", ".sh"]
+        if not ext.lower() in valid_extensions:
+            raise ValidationError("Unsupported file extension.")
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="config_script",
+        on_delete=models.CASCADE,
+        verbose_name="User",
+    )
+    """User who created the config file"""
+
+    file_name = models.CharField(max_length=30, blank=True)
+    """The custom name for the configuration"""
+
+    config_script = models.FileField(
+        upload_to="configs/",
+        default="configs/default.json",
+        validators=[validate_file_extension],
+    )
+    """Reference to the config script"""
 
 class EmergencyContact(BaseModel):
     """EmergencyContact Model"""
