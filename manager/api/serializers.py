@@ -60,13 +60,13 @@ class TimeDataSerializer(serializers.Serializer):
 
 
 class ConfigSerializer(serializers.Serializer):
-    """Custom Serializer to describe the confi file field for the Apidocs."""
+    """Custom Serializer to describe the config file field for the Apidocs."""
 
     config_file = serializers.JSONField()
 
 
 class ConfigScriptSerializer(serializers.Serializer):
-    """Custom Serializer to describe the confi script field for the Apidocs."""
+    """Custom Serializer to describe the config script field for the Apidocs."""
 
     config_script = serializers.JSONField()
 
