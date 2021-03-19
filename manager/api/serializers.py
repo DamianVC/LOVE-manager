@@ -1,6 +1,5 @@
 """Defines the serializer used by the REST API exposed by this app ('api')."""
 import json
-from django.conf import settings
 from drf_yasg.utils import swagger_serializer_method
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -142,7 +141,8 @@ class TokenSerializer(serializers.Serializer):
     @swagger_serializer_method(serializer_or_field=serializers.JSONField())
     def get_config(self, token) -> Union[dict, None]:
         """Return the config file.
-        If the 'no_config' flag is present in the url of the original request, then the file is not read and the return value is None
+        If the 'no_config' flag is present in the url of the original request, then the file is not
+        read and the return value is None
 
         Params
         ------
@@ -171,7 +171,8 @@ class TokenSerializer(serializers.Serializer):
     @swagger_serializer_method(serializer_or_field=serializers.JSONField())
     def get_config_script(self, token) -> Union[dict, None]:
         """Return the config script.
-        If the 'no_config_script' flag is present in the url of the original request, then the file is not read and the return value is None
+        If the 'no_config_script' flag is present in the url of the original request, then the file
+        is not read and the return value is None
 
         Params
         ------
@@ -194,7 +195,7 @@ class TokenSerializer(serializers.Serializer):
             return None
         else:
             cf = ConfigScript.objects.first()
-            serializer = ConfigScriptContentSerializer(cf)
+            serializer = ConfigScriptFileContentSerializer(cf)
             return serializer.data
 
 
