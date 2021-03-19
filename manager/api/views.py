@@ -7,17 +7,15 @@ import jsonschema
 import collections
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.decorators import permission_classes
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import viewsets, status
 from api.models import Token
-from api.serializers import TokenSerializer, ConfigSerializer, ConfigScriptSerializer
+from api.serializers import TokenSerializer, ConfigSerializer
 from api.serializers import (
     ConfigFileSerializer,
     ConfigFileContentSerializer,
@@ -26,7 +24,7 @@ from api.serializers import (
     EmergencyContactSerializer,
 )
 from .schema_validator import DefaultingValidator
-from api.models import ConfigFile, EmergencyContact
+from api.models import ConfigFile, ConfigScript, EmergencyContact
 
 valid_response = openapi.Response("Valid token", TokenSerializer)
 invalid_response = openapi.Response("Invalid token")
@@ -395,7 +393,6 @@ def salinfo_topic_names(request):
         403: openapi.Response("Unauthorized"),
     },
 )
-
 @api_view(["GET"])
 @permission_classes((IsAuthenticated,))
 def salinfo_topic_data(request):
@@ -451,6 +448,7 @@ def get_config(request):
 
     serializer = ConfigFileContentSerializer(cf)
     return Response(serializer.data)
+
 
 @api_view(["GET"])
 @permission_classes((IsAuthenticated,))
@@ -552,6 +550,7 @@ class EmergencyContactViewSet(viewsets.ModelViewSet):
 
     serializer_class = EmergencyContactSerializer
     """Serializer used to serialize View objects"""
+
 
 @api_view(["POST"])
 @permission_classes((IsAuthenticated,))
