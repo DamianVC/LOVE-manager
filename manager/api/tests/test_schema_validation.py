@@ -3,7 +3,6 @@ from django.urls import reverse
 from api.models import Token
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User, Permission
-import yaml
 
 
 @override_settings(DEBUG=True)
@@ -20,7 +19,7 @@ class SchemaValidationTestCase(TestCase):
             type: boolean
         fail_run:
             default: false
-            description: If true then raise an exception in the "run" method afer the "start" checkpoint but before waiting.
+            description: If true then raise an exception in the RUN method afer the START checkpoint but before waiting.
             type: boolean
         wait_time:
             default: 0

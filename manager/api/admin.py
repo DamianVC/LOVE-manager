@@ -10,9 +10,11 @@ from django.contrib import admin
 from api.models import Token
 from api.models import ConfigFile, EmergencyContact
 from api.models import CSCAuthorizationRequest
+from api.models import ScriptConfiguration
 
 
 admin.site.register(Token)
 admin.site.register(ConfigFile)
 admin.site.register(EmergencyContact)
 admin.site.register(CSCAuthorizationRequest)
+admin.site.register(ScriptConfiguration)

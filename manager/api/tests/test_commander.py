@@ -58,7 +58,7 @@ class CommanderTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             self.client.post(url, data, format="json")
-        expected_url = f"http://fakehost:fakeport/cmd"
+        expected_url = f'{"http://fakehost:fakeport/cmd"}'
         self.assertEqual(mock_requests.call_args, call(expected_url, json=data))
 
     @patch(
@@ -126,7 +126,7 @@ class SalinfoTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             self.client.get(url)
-        expected_url = f"http://fakehost:fakeport/salinfo/metadata"
+        expected_url = f'{"http://fakehost:fakeport/salinfo/metadata"}'
         self.assertEqual(mock_requests.call_args, call(expected_url))
 
     @patch(
@@ -143,7 +143,7 @@ class SalinfoTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             self.client.get(url)
-        expected_url = f"http://fakehost:fakeport/salinfo/topic-names"
+        expected_url = f'{"http://fakehost:fakeport/salinfo/topic-names"}'
         self.assertEqual(mock_requests.call_args, call(expected_url))
 
     @patch(
@@ -161,7 +161,7 @@ class SalinfoTestCase(TestCase):
         with self.assertRaises(ValueError):
             self.client.get(url)
         expected_url = (
-            f"http://fakehost:fakeport/salinfo/topic-names?categories=telemetry"
+            f'{"http://fakehost:fakeport/salinfo/topic-names?categories=telemetry"}'
         )
         self.assertEqual(mock_requests.call_args, call(expected_url))
 
@@ -179,7 +179,7 @@ class SalinfoTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             self.client.get(url)
-        expected_url = f"http://fakehost:fakeport/salinfo/topic-data"
+        expected_url = f'{"http://fakehost:fakeport/salinfo/topic-data"}'
         self.assertEqual(mock_requests.call_args, call(expected_url))
 
     @patch(
@@ -197,7 +197,7 @@ class SalinfoTestCase(TestCase):
         with self.assertRaises(ValueError):
             self.client.get(url)
         expected_url = (
-            f"http://fakehost:fakeport/salinfo/topic-data?categories=telemetry"
+            f'{"http://fakehost:fakeport/salinfo/topic-data?categories=telemetry"}'
         )
         self.assertEqual(mock_requests.call_args, call(expected_url))
 
@@ -237,8 +237,12 @@ class EFDTestCase(TestCase):
         """Test authorized user can query and get a timeseries"""
         # Act:
         cscs = {
-            "ATDome": {"0": {"topic1": ["field1"]},},
-            "ATMCS": {"1": {"topic2": ["field2", "field3"]},},
+            "ATDome": {
+                "0": {"topic1": ["field1"]},
+            },
+            "ATMCS": {
+                "1": {"topic2": ["field2", "field3"]},
+            },
         }
         data = {
             "start_date": "2020-03-16T12:00:00",
@@ -250,7 +254,7 @@ class EFDTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             self.client.post(url, data, format="json")
-        expected_url = f"http://fakehost:fakeport/efd/timeseries"
+        expected_url = f'{"http://fakehost:fakeport/efd/timeseries"}'
         self.assertEqual(mock_requests.call_args, call(expected_url, json=data))
 
 
@@ -291,13 +295,17 @@ class TCSTestCase(TestCase):
         # Act:
         data = {
             "command_name": "atcs_command",
-            "params": {"param1": "value1", "param2": 2, "param3": True,},  # noqa: E231
+            "params": {
+                "param1": "value1",
+                "param2": 2,
+                "param3": True,
+            },  # noqa: E231
         }
         url = reverse("TCS-aux")
 
         with self.assertRaises(ValueError):
             self.client.post(url, data, format="json")
-        expected_url = f"http://fakehost:fakeport/tcs/aux"
+        expected_url = f'{"http://fakehost:fakeport/tcs/aux"}'
         self.assertEqual(mock_requests.call_args, call(expected_url, json=data))
 
     @patch(
@@ -315,7 +323,11 @@ class TCSTestCase(TestCase):
         # Act:
         data = {
             "command_name": "atcs_command",
-            "params": {"param1": "value1", "param2": 2, "param3": True,},  # noqa: E231
+            "params": {
+                "param1": "value1",
+                "param2": 2,
+                "param3": True,
+            },  # noqa: E231
         }
         url = reverse("TCS-aux")
         response = self.client.post(url, data, format="json")
@@ -339,7 +351,7 @@ class TCSTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             self.client.get(url)
-        expected_url = f"http://fakehost:fakeport/tcs/aux/docstrings"
+        expected_url = f'{"http://fakehost:fakeport/tcs/aux/docstrings"}'
         self.assertEqual(mock_requests.call_args, call(expected_url))
 
     @patch(
@@ -355,13 +367,17 @@ class TCSTestCase(TestCase):
         # Act:
         data = {
             "command_name": "mtcs_command",
-            "params": {"param1": "value1", "param2": 2, "param3": True,},  # noqa: E231
+            "params": {
+                "param1": "value1",
+                "param2": 2,
+                "param3": True,
+            },  # noqa: E231
         }
         url = reverse("TCS-main")
 
         with self.assertRaises(ValueError):
             self.client.post(url, data, format="json")
-        expected_url = f"http://fakehost:fakeport/tcs/main"
+        expected_url = f'{"http://fakehost:fakeport/tcs/main"}'
         self.assertEqual(mock_requests.call_args, call(expected_url, json=data))
 
     @patch(
@@ -379,7 +395,11 @@ class TCSTestCase(TestCase):
         # Act:
         data = {
             "command_name": "mtcs_command",
-            "params": {"param1": "value1", "param2": 2, "param3": True,},  # noqa: E231
+            "params": {
+                "param1": "value1",
+                "param2": 2,
+                "param3": True,
+            },  # noqa: E231
         }
         url = reverse("TCS-main")
         response = self.client.post(url, data, format="json")
@@ -403,5 +423,5 @@ class TCSTestCase(TestCase):
 
         with self.assertRaises(ValueError):
             self.client.get(url)
-        expected_url = f"http://fakehost:fakeport/tcs/main/docstrings"
+        expected_url = f'{"http://fakehost:fakeport/tcs/main/docstrings"}'
         self.assertEqual(mock_requests.call_args, call(expected_url))

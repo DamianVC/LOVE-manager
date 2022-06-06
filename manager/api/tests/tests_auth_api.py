@@ -190,7 +190,10 @@ class AuthApiTestCase(TestCase):
         )
         self.assertEqual(
             response.data["user"],
-            {"username": self.user.username, "email": self.user.email,},
+            {
+                "username": self.user.username,
+                "email": self.user.email,
+            },
             "The user is not as expected",
         )
         self.assertTrue(
@@ -229,7 +232,10 @@ class AuthApiTestCase(TestCase):
         )
         self.assertEqual(
             response.data["user"],
-            {"username": self.user.username, "email": self.user.email,},
+            {
+                "username": self.user.username,
+                "email": self.user.email,
+            },
             "The user is not as expected",
         )
         self.assertTrue(

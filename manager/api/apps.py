@@ -10,4 +10,4 @@ class ApiConfig(AppConfig):
 
     def ready(self):
         """Import the signals module when the application is ready."""
-        import api.signals
+        import api.signals  # noqa: F401

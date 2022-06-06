@@ -3,7 +3,6 @@ from django.urls import reverse
 from api.models import Token
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User, Permission
-import yaml
 from unittest.mock import patch, call
 
 
@@ -53,7 +52,7 @@ class LOVECscTestCase(TestCase):
         with self.assertRaises(ValueError):
             self.client.post(url, data, format="json")
 
-        expected_url = f"http://fakehost:fakeport/lovecsc/observinglog"
+        expected_url = f'{"http://fakehost:fakeport/lovecsc/observinglog"}'
         self.assertEqual(mock_requests.call_args, call(expected_url, json=data))
 
     @patch(
