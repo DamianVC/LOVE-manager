@@ -4,7 +4,12 @@ from drf_yasg.utils import swagger_serializer_method
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from manager import utils
-from api.models import ConfigFile, EmergencyContact, CSCAuthorizationRequest
+from api.models import (
+    ConfigFile,
+    EmergencyContact,
+    CSCAuthorizationRequest,
+    ScriptConfiguration,
+)
 from typing import Union
 
 
@@ -19,6 +24,32 @@ class UserSerializer(serializers.ModelSerializer):
 
         fields = ("username", "email")
         """The fields of the model class to serialize"""
+
+
+class ScriptConfigurationSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    script_path = serializers.CharField(max_length=100)
+    config_name = serializers.CharField(max_length=50)
+    config_schema = serializers.CharField()
+    script_type = serializers.ChoiceField(ScriptConfiguration.ScriptTypes)
+    creation_timestamp = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = ScriptConfiguration
+
+    def create(self, validated_data):
+        """Function that allows to handle the request of the method POST.
+        Also, returns the instance of the seriliazer with the data that comes as payload
+        """
+        return ScriptConfiguration.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        """Function that allows the method PATCH to be properly executed, returns the new instance of the object"""
+        instance.config_schema = validated_data.get(
+            "config_schema", instance.config_schema
+        )
+        instance.save()
+        return instance
 
 
 class UserPermissionsSerializer(serializers.Serializer):

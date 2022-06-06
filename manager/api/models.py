@@ -77,6 +77,29 @@ class GlobalPermissions(models.Model):
         """((string, string)): Tuple defining permissions in the format ((<name>, <description>))"""
 
 
+class ScriptConfiguration(models.Model):
+    """ScriptConfiguration model, includes all the fields"""
+
+    class ScriptTypes(models.TextChoices):
+        STANDARD = "standard", "standard"
+        EXTERNAL = "external", "external"
+
+    script_path = models.CharField(max_length=100)
+    """The path of the script. It will be saved in this format: auxtel/calsys_take.py"""
+    config_name = models.CharField(max_length=50)
+    """The name that will have the saved custom configuration"""
+    config_schema = models.TextField()
+    """The config schema that will be saved """
+    script_type = models.CharField(
+        max_length=10, choices=ScriptTypes.choices, default=None
+    )
+    """The type of the script, it's referenced as 'standard' or 'external'  """
+    creation_timestamp = models.DateTimeField(auto_now_add=True, editable=False)
+    """The creation timestamp.
+    This timestamp will generate automatically once the script is saved
+    """
+
+
 class ConfigFile(BaseModel):
     """ConfigFile Model, that includes actual configuration files, creation date and user."""
 
@@ -162,7 +185,9 @@ class CSCAuthorizationRequest(models.Model):
     """Comment added to the authorization request"""
 
     status = models.CharField(
-        max_length=10, choices=RequestStatus.choices, default=RequestStatus.PENDING,
+        max_length=10,
+        choices=RequestStatus.choices,
+        default=RequestStatus.PENDING,
     )
     """Current status of the request"""
 

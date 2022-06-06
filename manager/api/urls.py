@@ -18,7 +18,11 @@ Including another URLconf
 from django.conf.urls import include
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from api.views import ConfigFileViewSet, EmergencyContactViewSet
+from api.views import (
+    ConfigFileViewSet,
+    EmergencyContactViewSet,
+    ScriptConfigurationViewSet,
+)
 
 import api.views
 
@@ -63,6 +67,9 @@ urlpatterns = [
 ]
 router.register("configfile", ConfigFileViewSet)
 router.register("emergencycontact", EmergencyContactViewSet)
+router.register(
+    "script-configuration", ScriptConfigurationViewSet, basename="script-configuration"
+)
 router.register(
     "authlistrequest",
     api.views.CSCAuthorizationRequestViewSet,
