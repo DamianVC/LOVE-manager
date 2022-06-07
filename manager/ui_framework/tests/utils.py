@@ -151,7 +151,9 @@ class BaseTestCase(TestCase):
                 "class": Workspace,
                 "key": "workspace",
                 "old_count": Workspace.objects.count(),
-                "new_data": {"name": "My new Workspace",},  # noqa: E231
+                "new_data": {
+                    "name": "My new Workspace",
+                },  # noqa: E231
                 "current_data": self.workspaces_data,
                 "list_data": self.workspaces_data,
                 "selected_id": self.workspaces_data[0]["id"],

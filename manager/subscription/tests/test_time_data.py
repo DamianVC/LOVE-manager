@@ -1,6 +1,5 @@
 """Tests for the subscription of consumers to love_csc streams."""
 import pytest
-import json
 from django.contrib.auth.models import User, Permission
 from channels.testing import WebsocketCommunicator
 from manager.routing import application

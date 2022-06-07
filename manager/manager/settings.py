@@ -251,7 +251,9 @@ if AUTH_LDAP_SERVER_URI and not TESTING:
     AUTH_LDAP_BIND_PASSWORD = ""
 
     AUTH_LDAP_USER_SEARCH = LDAPSearch(
-        "ou=people,dc=planetexpress,dc=com", ldap.SCOPE_SUBTREE, "(uid=%(user)s)",
+        "ou=people,dc=planetexpress,dc=com",
+        ldap.SCOPE_SUBTREE,
+        "(uid=%(user)s)",
     )
 
 TRACE_TIMESTAMPS = True

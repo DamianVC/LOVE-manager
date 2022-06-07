@@ -9,5 +9,5 @@ class UiFrameworkConfig(AppConfig):
     """The name of the app."""
 
     def ready(self):
-        """ Import signals module when app is ready """
+        """Import signals module when app is ready"""
         import ui_framework.signals

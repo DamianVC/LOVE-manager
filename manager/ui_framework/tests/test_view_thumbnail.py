@@ -43,7 +43,7 @@ class ViewThumbnailTestCase(TestCase):
             os.remove(file)
 
     def test_new_view(self):
-        """ Test thumbnail behavior when adding a new view """
+        """Test thumbnail behavior when adding a new view"""
         # Arrange
         # read test data (base64 string)
         old_count = View.objects.count()
@@ -93,7 +93,7 @@ class ViewThumbnailTestCase(TestCase):
         )
 
     def test_delete_view(self):
-        """ Test thumbnail behavior when deleting a view """
+        """Test thumbnail behavior when deleting a view"""
         # Arrange
         # add view with thumbnail
         mock_location = os.path.join(

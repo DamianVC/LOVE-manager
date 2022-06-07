@@ -43,7 +43,7 @@ class TestHeartbeat:
 
         # Assert 1
         assert (
-            response["data"] == f"Successfully subscribed to heartbeat-manager-0-stream"
+            response["data"] == f'{"Successfully subscribed to heartbeat-manager-0-stream"}'
         )
 
         response = await communicator.receive_json_from(timeout=10)
@@ -62,7 +62,7 @@ class TestHeartbeat:
         # Assert 2
         assert (
             response["data"]
-            == f"Successfully unsubscribed to heartbeat-manager-0-stream"
+            == f'{"Successfully unsubscribed to heartbeat-manager-0-stream"}'
         )
 
         await communicator.disconnect()
@@ -83,7 +83,7 @@ class TestHeartbeat:
 
         # Assert 1
         assert (
-            response["data"] == f"Successfully subscribed to heartbeat-manager-0-stream"
+            response["data"] == f'{"Successfully subscribed to heartbeat-manager-0-stream"}'
         )
 
         response = await communicator.receive_json_from(timeout=10)
@@ -102,7 +102,7 @@ class TestHeartbeat:
         # Assert 2
         assert (
             response["data"]
-            == f"Successfully unsubscribed to heartbeat-manager-0-stream"
+            == f'{"Successfully unsubscribed to heartbeat-manager-0-stream"}'
         )
         await communicator.disconnect()
         await hb_manager.stop()
@@ -129,7 +129,7 @@ class TestHeartbeat:
 
         # Assert 1
         assert (
-            response["data"] == f"Successfully subscribed to heartbeat-manager-0-stream"
+            response["data"] == f'{"Successfully subscribed to heartbeat-manager-0-stream"}'
         )
 
         response = await communicator.receive_json_from(timeout=10)
@@ -168,7 +168,7 @@ class TestHeartbeat:
 
         # Assert 1
         assert (
-            response["data"] == f"Successfully subscribed to event-Heartbeat-0-stream"
+            response["data"] == f'{"Successfully subscribed to event-Heartbeat-0-stream"}'
         )
 
         # Act 2 (Send producer heartbeat through websocket)
@@ -217,7 +217,7 @@ class TestHeartbeat:
 
         # Assert 1
         assert (
-            response["data"] == f"Successfully subscribed to heartbeat-manager-0-stream"
+            response["data"] == f'{"Successfully subscribed to heartbeat-manager-0-stream"}'
         )
         response = await communicator.receive_json_from(timeout=5)
         assert response["data"][0]["data"]["timestamp"] is not None
